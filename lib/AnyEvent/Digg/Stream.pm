@@ -189,7 +189,7 @@ L<http://rt.cpan.org/Public/Dist/Display.html?Name=AnyEvent-Digg-Stream>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/AnyEvent-Digg-Stream>
+L<http://search.cpan.org/dist/AnyEvent-Digg-Stream/>
 
 =back
 
