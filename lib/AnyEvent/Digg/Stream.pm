@@ -13,7 +13,7 @@ $VERSION = eval $VERSION;
 sub new {
     my ($class, %params) = @_;
 
-    my $on_error      = $params{on_erorr}      || sub { die @_ };
+    my $on_error      = $params{on_erorr}      || sub { croak @_ };
     my $on_eof        = $params{on_eof}        || sub { };
     my $on_event      = $params{on_event}      || sub { };
     my $on_comment    = $params{on_comment}    || sub { };
