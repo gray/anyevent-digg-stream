@@ -28,7 +28,7 @@ sub new {
 
     my @events;
     for my $event (keys %{{map { $_=>1 } @{$params{events}} }}) {
-        croak "Unknown event type: $event\n" unless $events{$event};
+        $on_error->("Unknown event type: $event\n") unless $events{$event};
         push @events, $event;
     }
 
