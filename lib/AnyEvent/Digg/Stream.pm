@@ -59,7 +59,7 @@ sub new {
             return 1;
         },
         on_body => sub {
-            my ($content, $headers) = @_;
+            my ($content) = @_;
             my $data = decode_json($content);
             $on_event->($data);
             ($events{$data->{type}} || sub {})->($data);
