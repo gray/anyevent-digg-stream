@@ -1,4 +1,7 @@
 Revision history for AnyEvent-Digg-Stream
 
+0.02  Fri Jan 14 02:48:50 UTC 2011
+    - Updated to work with AnyEvent::HTTP 2.
+
 0.01  Tue Nov 16 22:34:20 UTC 2010
     - Initial distribution.
