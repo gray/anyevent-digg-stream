@@ -5,6 +5,7 @@ use warnings;
 
 use AnyEvent::HTTP;
 use Carp qw(croak);
+use JSON;
 use URI;
 
 our $VERSION = '0.01';
@@ -14,7 +15,6 @@ sub new {
     my ($class, %params) = @_;
 
     my $on_error      = $params{on_erorr}      || sub { croak @_ };
-    my $on_eof        = $params{on_eof}        || sub { };
     my $on_event      = $params{on_event}      || sub { };
     my $on_comment    = $params{on_comment}    || sub { };
     my $on_digg       = $params{on_digg}       || sub { };
@@ -58,29 +58,14 @@ sub new {
             }
             return 1;
         },
-        want_body_handle => 1,
-        sub {
-            my ($handle, $headers) = @_;
-            unless (defined $handle) {
-                $on_error->("$headers->{Status}: $headers->{Reason}");
-            }
-
-            $handle->on_error(sub {
-                undef $handle;
-                $on_error->($_[2]);
-            });
-            $handle->on_eof(sub {
-                undef $handle;
-                $on_eof->(@_);
-            });
-            $handle->on_read(sub {
-                $handle->push_read(json => sub {
-                    my (undef, $data) = @_;
-                    $on_event->($data);
-                    ($events{$data->{type}} || sub {})->($data);
-                });
-            });
-        }
+        on_body => sub {
+            my ($content, $headers) = @_;
+            my $data = decode_json($content);
+            $on_event->($data);
+            ($events{$data->{type}} || sub {})->($data);
+            return 1;
+        },
+        sub {},
     );
 
     return $conn;
@@ -142,9 +127,7 @@ Callback to executute for the related event type.
 
 =item B<on_error>
 
-=item B<on_eof>
-
-Callbacks to execute on errors.
+Callback to execute on error.
 
 =back
 
