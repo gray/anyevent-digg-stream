@@ -38,6 +38,8 @@ sub new {
         3 == @events ? () : @events ? join(',', @events) : (),
     );
 
+    my $json = JSON->new->utf8;
+
     my $conn = http_request(
         GET     => $uri,
         headers => {
@@ -60,9 +62,10 @@ sub new {
         },
         on_body => sub {
             my ($content) = @_;
-            my $data = decode_json($content);
-            $on_event->($data);
-            ($events{$data->{type}} || sub {})->($data);
+            if (my $data = $json->incr_parse($content)) {
+                $on_event->($data);
+                ($events{$data->{type}} || sub {})->($data);
+            }
             return 1;
         },
         sub {},
