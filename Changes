@@ -1,5 +1,9 @@
 Revision history for AnyEvent-Digg-Stream
 
+0.04  Thu Aug 11 21:31:41 UTC 2011
+    - Added on_disconnect callback. (RT #70208)
+    - Made parsing of JSON more robust.
+
 0.03  Sat Jan 15 02:52:18 UTC 2011
     - Switched to incremental parsing of JSON to handle the case where not
       exactly one JSON object is returned per line.
