@@ -5,7 +5,7 @@ use AnyEvent;
 use AnyEvent::Digg::Stream;
 use POSIX qw(strftime);
 
-binmode STDOUT, ":utf8";
+binmode STDOUT, ':encoding(utf-8)';
 
 my $cv = AnyEvent->condvar;
 
