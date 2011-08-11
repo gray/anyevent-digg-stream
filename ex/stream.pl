@@ -15,6 +15,10 @@ my $client = AnyEvent::Digg::Stream->new(
         printf "[%s] %s for %s\n", strftime('%F %T', localtime),
             $event->{type}, $event->{item}{link};
     },
+    on_disconnect => sub {
+        warn "Disconnected\n";
+        $cv->send;
+    }
 );
 
 $cv->recv;

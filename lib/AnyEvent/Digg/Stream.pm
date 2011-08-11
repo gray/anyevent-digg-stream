@@ -15,7 +15,7 @@ sub new {
     my ($class, %params) = @_;
 
     my $on_error      = $params{on_error}      || sub { croak @_ };
-    my $on_disconnect = $params{on_disconnect} || $on_error;
+    my $on_disconnect = $params{on_disconnect} || sub { croak 'Disconnected' };
     my $on_event      = $params{on_event}      || sub { };
     my $on_comment    = $params{on_comment}    || sub { };
     my $on_digg       = $params{on_digg}       || sub { };
@@ -69,10 +69,7 @@ sub new {
             }
             return 1;
         },
-        sub {
-            my ($body, $headers) = @_;
-            $on_disconnect->('Disconnected' . ($body || ''));
-        },
+        sub { $on_disconnect->() },
     );
 
     return $conn;
