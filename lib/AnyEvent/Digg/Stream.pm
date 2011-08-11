@@ -63,9 +63,12 @@ sub new {
         },
         on_body => sub {
             my ($content) = @_;
-            if (my $data = $json->incr_parse($content)) {
+            if (my $data = eval { $json->incr_parse($content) }) {
                 $on_event->($data);
                 ($events{$data->{type}} || sub {})->($data);
+            }
+            elsif ($@) {
+                $json->incr_skip;
             }
             return 1;
         },
