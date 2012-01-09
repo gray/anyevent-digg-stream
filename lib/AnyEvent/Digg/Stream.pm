@@ -36,7 +36,7 @@ sub new {
     my $uri = URI->new('http://services.digg.com/2.0/stream');
     $uri->query_form(
         format => 'json',
-        3 == @events ? () : @events ? join(',', @events) : (),
+        3 == @events ? () : @events ? (types => join ',', @events) : (),
     );
 
     my $json = JSON->new->utf8;
